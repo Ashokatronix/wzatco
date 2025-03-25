@@ -25,10 +25,10 @@ class RemoteOne extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      RemoteButton("remoteOne", 3),
-                      RemoteButton("remoteOne", 2),
-                      RemoteButton("remoteOne", 0),
                       RemoteButton("remoteOne", 1),
+                      RemoteButton("remoteOne", 2),
+                      RemoteButton("remoteOne", 3),
+                      RemoteButton("remoteOne", 4),
                     ],
                   ),
                   Row(
@@ -45,40 +45,27 @@ class RemoteOne extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      RemoteButton("remoteOne", 12),
-                      RemoteButton("remoteOne", 16),
-                      RemoteButton("remoteOne", 20),
                       RemoteButton("remoteOne", 8),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      RemoteButton("remoteOne", 13),
-                      RemoteButton("remoteOne", 17),
-                      RemoteButton("remoteOne", 21),
                       RemoteButton("remoteOne", 9),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      RemoteButton("remoteOne", 14),
-                      RemoteButton("remoteOne", 18),
-                      RemoteButton("remoteOne", 22),
                       RemoteButton("remoteOne", 10),
+                      RemoteButton("remoteOne", 11),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      RemoteButton("remoteOne", 12),
+                      RemoteButton("remoteOne", 13),
+                      RemoteButton("remoteOne", 14),
                       RemoteButton("remoteOne", 15),
-                      RemoteButton("remoteOne", 19),
-                      RemoteButton("remoteOne", 23),
-                      RemoteButton("remoteOne", 11),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      RemoteButton("remoteOne", 16),
                     ],
                   ),
                 ],
