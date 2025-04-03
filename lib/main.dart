@@ -13,6 +13,7 @@ class TVRemoteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, // This hides the debug banner
       title: 'TV Remote',
       home: TVRemoteScreen(),
     );
@@ -68,13 +69,12 @@ class _TVRemoteScreenState extends State<TVRemoteScreen> {
       _showBlinkDot = true;
     });
 
-    Timer.periodic(Duration(milliseconds: 500), (timer) {
+    Timer.periodic(Duration(milliseconds: 50), (timer) {
       setState(() {
         _showBlinkDot = !_showBlinkDot;
       });
-
       blinkCount++;
-      if (blinkCount >= 6) { // 3 full blinks (on and off count as one cycle)
+      if (blinkCount >= 4) { // 3 full blinks (on and off count as one cycle)
         timer.cancel();
         setState(() {
           _showBlinkDot = false;
@@ -88,215 +88,238 @@ class _TVRemoteScreenState extends State<TVRemoteScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('WZATCO'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Display platform info
-          Text('Platform Version: $_platformVersion'),
-          Text('Has IR Emitter: $_hasIrEmitter'),
-          Text('Carrier Frequencies: $_getCarrierFrequencies'),
-          SizedBox(height: 20),
-
-          // Row 1: Power On/Off and Mute
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: PowerOnOff);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Power On/Off'),
+        actions: [
+          Visibility(
+            visible: _showBlinkDot, // Controls visibility for blinking
+            child: Container(
+              margin: EdgeInsets.only(right: 30), // Add some spacing from the edge
+              width: 5, // Small red dot
+              height: 5,
+              decoration: BoxDecoration(
+                color: Colors.red, // Red color for the dot
+                shape: BoxShape.circle, // Circular shape
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: Mute);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Mute'),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-
-          // Row 2: Settings, Mode, and Source
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: Settings);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Settings'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: Mode);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Mode'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: Source);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Source'),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-
-          // Row 3: Up Arrow
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: UpArrow);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('↑'),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-
-          // Row 4: Left Arrow, OK, and Right Arrow
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: LeftArrow);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('←'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: OK);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('OK'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: RightArrow);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('→'),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-
-          // Row 5: Down Arrow
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: DownArrow);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('↓'),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-
-          // Row 6: Menu, Home, and Return
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: Menu);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Menu'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: Home);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Home'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: Return);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Return'),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-
-          // Row 7: Volume -, Play/Pause, and Volume +
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: VolumeMinus);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Volume -'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: PlayPause);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Icon(Icons.play_arrow), // Play/Pause icon
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  HapticFeedback.vibrate();
-                  await IrSensorPlugin.transmitString(pattern: VolumePlus);
-                  // Trigger red dot blinking
-                  _blinkRedDot();
-                },
-                child: Text('Volume +'),
-              ),
-            ],
+            ),
           ),
         ],
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.grey.shade900,
+              Colors.grey.shade800,
+              Colors.grey.shade700,
+            ],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            SizedBox(height: 20),
+            // Row 1: Power On/Off and Mute
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: PowerOnOff);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Power On/Off'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: Mute);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Mute'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Row 2: Settings, Mode, and Source
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: Settings);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Settings'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: Mode);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Mode'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: Source);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Source'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Row 3: Up Arrow
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: UpArrow);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('↑'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Row 4: Left Arrow, OK, and Right Arrow
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: LeftArrow);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('←'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: OK);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('OK'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: RightArrow);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('→'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Row 5: Down Arrow
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: DownArrow);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('↓'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Row 6: Menu, Home, and Return
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: Menu);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Menu'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: Home);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Home'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: Return);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Return'),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+
+            // Row 7: Volume -, Play/Pause, and Volume +
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: VolumeMinus);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Volume -'),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: PlayPause);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Icon(Icons.play_arrow), // Play/Pause icon
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    HapticFeedback.vibrate();
+                    await IrSensorPlugin.transmitString(pattern: VolumePlus);
+                    // Trigger red dot blinking
+                    _blinkRedDot();
+                  },
+                  child: Text('Volume +'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
